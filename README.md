@@ -16,7 +16,7 @@ step 2:
 run 's2-get-html-code.py', this file will go through all number in 'index_list.txt' and use these number to get the url of novels from 'novel_url_list.json' which have matched index number --> access each of these url and get a specific line of html code from each of these website which have 'Last Edit:' and 'by traitorAIZEN'
 and save all these data to 'html_database_update.csv'
 
-IF YOU RUN THIS FILE FOR THE FISRT TIME rename the file to 'html_database.csv' this file serves as the original data to compare with the new 'html_database_update.csv' file the next time you run 's2-get-html-code.py' and BE PATIENT becasue the amount of time this process will take depend on how many novel in your list 
+IF YOU RUN THIS FILE FOR THE FISRT TIME rename the file to 'html_database.csv' this file serves as the original data to compare with the new 'html_database_update.csv' file the next time you run 's2-get-html-code.py' and BE PATIENT because the amount of time this process will take depend on how many novel in your list 
 
 
 
