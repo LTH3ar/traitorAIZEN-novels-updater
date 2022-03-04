@@ -22,6 +22,8 @@ def get_data_from_web(url): # get the line of html code which contain "Last Edit
         if x.find(text=re.compile("Last Edit:")) and x.find(text=re.compile("by traitorAIZEN")):
             update_data = x
             break
+        else:
+            update_data = "none"
 
 #convert number in index_list.txt to a list of number
 my_file = open("index_list.txt", "r")
@@ -45,4 +47,6 @@ for i in index_list:
 dict = {"ID": index_list ,"html_data": html_data_list}
 df = pandas.DataFrame(dict)
 df.to_csv('html_database_update.csv')
+    
+
     
