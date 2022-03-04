@@ -1,4 +1,4 @@
-# traitorAIZEN-novels-update-checker
+# traitorAIZEN-novels-update-checking-tool
 This is just a product of my laziness and it's only job is to check whether there is any new upload in the list of traitorAIZEN novels
 
 This is how it works: 
@@ -7,7 +7,7 @@ This is how it works:
 
 step 1: 
 
-run 's1-get-novels-list-from-website.py', run this file once is enough, this python file get a list of novels from http://www.vn-meido.com/k1/index.php?topic=6646.msg38869#msg38869 and save it to 'novel_url_list.json' and before run this file MAKE SURE TO DELETE the old 'novel_url_list.json' because I haven't add an update function yet.
+run 's1-get-novels-list-from-website.py', this python file get a list of novels from http://www.vn-meido.com/k1/index.php?topic=6646.msg38869#msg38869 and save it to 'novel_url_list.json'.
 
 
 
@@ -22,7 +22,7 @@ IF YOU RUN THIS FILE FOR THE FISRT TIME rename the file to 'html_database.csv' t
 
 step 3:
 
-run 'check-update.py', this program will compare data from 'html_database.csv' and 'html_database_update.csv' row by row and if there is any different it's going to output the info of the new update novels which including 'Title', 'URL'
+run 's3-check-update.py', this program will compare data from 'html_database.csv' and 'html_database_update.csv' row by row and if there is any different it's going to output the info of the new update novels which including 'Title', 'URL'
 
 
 after finish all these step delete the old 'html_database.csv' and replace it with 'html_database_update.csv'
