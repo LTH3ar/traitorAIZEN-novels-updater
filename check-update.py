@@ -1,11 +1,5 @@
-from abc import update_abstractmethods
 from os import system
-from textwrap import indent
-import requests
-from bs4 import BeautifulSoup
-from urllib.request import Request, urlopen
 import pandas
-import re
 import json
 
 def get_url_by_index(json_data, i):
@@ -46,3 +40,5 @@ for num in index_list:
 for i in confirmed_list:
    updated_novel = get_url_by_index(json_data, int(i))
    print(updated_novel)
+   print("\n")
+
