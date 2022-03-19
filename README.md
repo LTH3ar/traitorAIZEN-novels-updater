@@ -22,7 +22,9 @@ IF YOU RUN THIS FILE FOR THE FISRT TIME rename the file to 'html_database.csv' t
 
 step 3:
 
-run 's3-check-update.py', this program will compare data from 'html_database.csv' and 'html_database_update.csv' row by row and if there is any different it's going to output the info of the new update novels which including 'Title', 'URL'
+run 'check-update-csv.py' or 'check-update-json.py'
 
+'check-update-csv.py' will compare data from 'html_database.csv' and  'html_database_update.csv' row by row and print the info of the new update novels which including 'Title', 'URL'
 
-after finish all these step delete the old 'html_database.csv' and replace it with 'html_database_update.csv'
+'check-update-json.py' will compare data from 'novel_last_update.json' and  'novel_update.json' row by row and print the info of the new update novels which including 'Title', 'URL'
+
