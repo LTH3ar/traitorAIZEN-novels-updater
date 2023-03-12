@@ -115,16 +115,12 @@ class MainFuncs:
         self.output.save_novels_list(self.novels_list, file_name)
 
     def load_novels_list(self, file_name):
-        #reset the novels_list
-        self.novels_list = []
         self.input.load_novels_list(file_name, self.novels_list)
 
     def output_novels_list(self, lst):
         self.output.output_novels_list(lst)
 
     def novel_selected_import(self, file_name):
-        #reset the novels_list_seleted
-        self.novels_list_seleted = []
         self.input.load_novels_list(file_name, self.novels_list_seleted)
 
     def novel_selected_export(self, file_name):
