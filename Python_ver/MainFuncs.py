@@ -4,12 +4,14 @@ from input import Input
 import requests
 from bs4 import BeautifulSoup
 import json
+from datetime import datetime
 
 class MainFuncs:
     def __init__(self, novels_list, novels_list_seleted, new_update_list):
         self.novels_list = novels_list
         self.novels_list_seleted = novels_list_seleted
         self.new_update_list = new_update_list
+        self.now = datetime.now()
         # self.index_lst = []
         self.output = Output(self.novels_list, self.novels_list_seleted)
         self.input = Input(self.novels_list, self.novels_list_seleted)
@@ -19,13 +21,6 @@ class MainFuncs:
     # scrape list of novels from a website(set last_update to "N/A")
     def scrape_novels_list(self, url):
         page = requests.get(url)
-        # target inside <div class="inner" data-msgid="38869" id="msg_38869">
-        # key: tag <a> with attribute href, class="bbc_link", target="_blank", rel="noopener"
-        # get all <a> tags with attribute href, class="bbc_link", target="_blank", rel="noopener"
-        # id(inside the url of the novel, ex: index.php?topic=2013.msg23919 so get what ever after topic=)
-        # title is the text inside the <a> tag
-        # url is the href attribute
-        # last_update is "N/A"(there will be another function to update this)
 
         soup = BeautifulSoup(page.content, "html.parser")
         results = soup.find_all("a", href=True, class_="bbc_link", target="_blank", rel="noopener")
@@ -39,45 +34,25 @@ class MainFuncs:
                 id = str("NoID_" + str(tmp_id))
                 tmp_id += 1
 
-            self.input.input_novel(index, id, str(result.text), str(result["href"]), str("N/A"))
+            self.input.input_novel(index, id, str(result.text), str(result["href"]), str("N/A"), self.novels_list)
             index += 1
 
-    def save_novels_list(self, file_name):
-        self.output.save_novels_list(file_name)
 
-    def load_novels_list(self, file_name):
-        self.input.load_novels_list(file_name)
-
-    def output_novels_list(self):
-        self.output.output_novels_list()
-
-    def novel_selected_import(self, file_name):
-        self.input.load_novels_list_selected(file_name)
-
-    def novel_selected_export(self, file_name):
-        self.output.save_novels_list_selected(file_name)
-
-    def update_novels_list(self, url, file_name1, file_name2):
-        self.load_novels_list(file_name1)
-        self.novel_selected_import(file_name2)
-        for novel_selected in self.novels_list_seleted:
-            for novel in self.novels_list:
-                if novel_selected.get_id() == novel.get_id():
-                    novel_selected.set_last_update(novel_selected.get_last_update())
-        self.novel_selected_export(file_name2)
-
-        self.novels_list = []
+    # import list of novels from a file, run the scrape_novels_list function & add the last_update to the novels_list
+    def update_novels_list(self, url, file_name):
+        novels_list_temp = []
+        self.input.load_novels_list(file_name, novels_list_temp)
         self.scrape_novels_list(url)
-        for novel_selected in self.novels_list_seleted:
-            for novel in self.novels_list:
-                if novel_selected.get_id() == novel.get_id():
-                    novel.set_last_update(novel_selected.get_last_update())
-        self.output.save_novels_list(file_name1)
+        for i in self.novels_list:
+            for j in novels_list_temp:
+                if i.get_id() == j.get_id():
+                    i.set_last_update(j.get_last_update())
+        self.output.save_novels_list(self.novels_list, file_name)
 
+
+
+    # scrape the last_update of a novel from a website
     def scrape_novel_last_update(self, url):
-        #span class="smalltext modified floatright mvisible", text Ex: Last Edit</span>: February 11, 2023, 10:36:48 PM by traitorAIZEN
-        # focus on the text after "Last Edit</span>: ", text must contains "by traitorAIZEN"
-
         page = requests.get(url)
         soup = BeautifulSoup(page.content, "html.parser")
         results = soup.find_all("span", class_="smalltext modified floatright mvisible")
@@ -93,8 +68,8 @@ class MainFuncs:
         else:
             return str("N/A")
 
-
-    def update_novels_list_last_update(self): # must run after novels_list_seleted is filled
+    # update the last_update of the novels_list
+    def update_novels_list_last_update(self, file_name):
         for i in self.novels_list_seleted:
             for novel in self.novels_list:
                 if i.get_id() == novel.get_id():
@@ -103,9 +78,10 @@ class MainFuncs:
                         novel.set_last_update(update)
                         self.new_update_list.append(novel)
                         self.output.output_novel(novel)
-                        self.output.save_novels_list("novels_list.json")
+                        self.output.save_novels_list(file_name)
         #self.output.save_novels_list("novels_list.json")
 
+    # output the new_update_list, save it to a file
     def output_new_update_list(self):
         for item in self.new_update_list:
             print("Index: " + str(item.get_index()))
@@ -113,9 +89,30 @@ class MainFuncs:
             print("Title: " + item.get_title())
             print("URL: " + item.get_url())
             print("Last update: " + item.get_last_update())
-        with open("new_update_list.json", "w") as f:
+
+        filename = str("Update_" + self.now.strftime("%d-%m-%Y_%H-%M-%S"))
+        with open(filename, "w") as f:
             json.dump(self.new_update_list, f, indent=4, default=lambda o: o.__dict__)
 
+
+    def save_novels_list(self, file_name):
+        self.output.save_novels_list(self.novels_list, file_name)
+
+    def load_novels_list(self, file_name):
+        #reset the novels_list
+        self.novels_list = []
+        self.input.load_novels_list(file_name, self.novels_list)
+
+    def output_novels_list(self, lst):
+        self.output.output_novels_list(lst)
+
+    def novel_selected_import(self, file_name):
+        #reset the novels_list_seleted
+        self.novels_list_seleted = []
+        self.input.load_novels_list(file_name, self.novels_list_seleted)
+
+    def novel_selected_export(self, file_name):
+        self.output.save_novels_list(self.novels_list_seleted, file_name)
 
     # extra only use for testing and moving data
     '''

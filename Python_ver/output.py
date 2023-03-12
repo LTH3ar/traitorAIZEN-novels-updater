@@ -13,15 +13,11 @@ class Output:
         print("URL: " + novel.get_url())
         print("Last update: " + novel.get_last_update())
 
-    def output_novels_list(self):
-        for novel in self.novels_list:
+    def output_novels_list(self, lst):
+        for novel in lst:
             self.output_novel(novel)
             print("\n")
 
-    def save_novels_list(self, file_name):
+    def save_novels_list(self, lst, file_name):
         with open(file_name, "w") as f:
-            json.dump(self.novels_list, f, indent=4, default=lambda o: o.__dict__)
-
-    def save_novels_list_selected(self, file_name):
-        with open(file_name, "w") as f:
-            json.dump(self.novels_list_selected, f, indent=4, default=lambda o: o.__dict__)
+            json.dump(lst, f, indent=4, default=lambda o: o.__dict__)

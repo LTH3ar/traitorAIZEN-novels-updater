@@ -7,33 +7,17 @@ class Input:
         self.novels_list_selected = novels_list_selected
 
     # novels_list
-    def input_novel(self, index, novel_id, novel_title, novel_url, last_update):
+    def input_novel(self, index, novel_id, novel_title, novel_url, last_update, lst):
         novel = Novel()
         novel.set_index(index)
         novel.set_id(novel_id)
         novel.set_title(novel_title)
         novel.set_url(novel_url)
         novel.set_last_update(last_update)
-        self.novels_list.append(novel)
+        lst.append(novel)
 
-    def load_novels_list(self, file_name):
+    def load_novels_list(self, file_name, lst):
         with open(file_name, "r") as f:
             data = json.load(f)
             for novel in data:
-                self.input_novel(novel["_Novel__index"], novel["_Novel__id"], novel["_Novel__title"], novel["_Novel__url"], novel["_Novel__last_update"])
-
-    # novels_list_selected
-    def input_novel_selected(self, index, novel_id, novel_title, novel_url, last_update):
-        novel = Novel()
-        novel.set_index(index)
-        novel.set_id(novel_id)
-        novel.set_title(novel_title)
-        novel.set_url(novel_url)
-        novel.set_last_update(last_update)
-        self.novels_list_selected.append(novel)
-
-    def load_novels_list_selected(self, file_name):
-        with open(file_name, "r") as f:
-            data = json.load(f)
-            for novel in data:
-                self.input_novel_selected(novel["_Novel__index"], novel["_Novel__id"], novel["_Novel__title"], novel["_Novel__url"], novel["_Novel__last_update"])
+                self.input_novel(novel["_Novel__index"], novel["_Novel__id"], novel["_Novel__title"], novel["_Novel__url"], novel["_Novel__last_update"], lst)

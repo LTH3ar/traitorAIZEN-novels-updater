@@ -54,7 +54,7 @@ class Novel:
     def set_last_update(self, last_update):
         if isinstance(last_update, str) and len(last_update) > 0:
             self.__last_update = last_update
-        elif last_update == "":
+        elif last_update == "" or last_update is None:
             self.__last_update = "N/A"
         else:
             raise ValueError("Invalid last update")
