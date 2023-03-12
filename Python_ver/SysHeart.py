@@ -53,6 +53,7 @@ class SysHeart:
                 self.main_funcs.novel_selected_import(self.list_file_selected)
             elif choice == "8":
                 self.main_funcs.output_novels_list(self.new_update_list)
+                self.main_funcs.output_new_update_list()
             elif choice == "9":
                 self.extra_funcs.backup_novels_list()
             elif choice == "10":
