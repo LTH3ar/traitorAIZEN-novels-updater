@@ -1,3 +1,4 @@
+import shutil
 from classes.novel import Novel
 from output import Output
 from input import Input
@@ -5,7 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
-
 class MainFuncs:
     def __init__(self, novels_list, novels_list_seleted, new_update_list):
         self.novels_list = novels_list
@@ -17,11 +17,24 @@ class MainFuncs:
         self.input = Input(self.novels_list, self.novels_list_seleted)
 
 
+    def if_exist(self, file_name):
+        try:
+            with open(file_name, "r") as f:
+                data = json.load(f)
+                if len(data) == 0:
+                    return False
+                else:
+                    return True
+        except:
+            return False
+
     # scraper function
     # scrape list of novels from a website(set last_update to "N/A")
     def scrape_novels_list(self, url):
+        # check if the novels_list.json file is exist or empty
+        # if empty run the scrape_novels_list function
+        # if not the run the update_novels_list function
         page = requests.get(url)
-
         soup = BeautifulSoup(page.content, "html.parser")
         results = soup.find_all("a", href=True, class_="bbc_link", target="_blank", rel="noopener")
         tmp_id = int(0)
@@ -69,7 +82,9 @@ class MainFuncs:
             return str("N/A")
 
     # update the last_update of the novels_list
-    def update_novels_list_last_update(self, file_name):
+    def update_novels_list_last_update(self, file_name1, file_name2):
+        self.load_novels_list(file_name1)
+        self.novel_selected_import(file_name2)
         for i in self.novels_list_seleted:
             for novel in self.novels_list:
                 if i.get_id() == novel.get_id():
@@ -78,7 +93,7 @@ class MainFuncs:
                         novel.set_last_update(update)
                         self.new_update_list.append(novel)
                         self.output.output_novel(novel)
-                        self.output.save_novels_list(file_name)
+                        self.output.save_novels_list(file_name1)
         #self.output.save_novels_list("novels_list.json")
 
     # output the new_update_list, save it to a file
@@ -90,10 +105,11 @@ class MainFuncs:
             print("URL: " + item.get_url())
             print("Last update: " + item.get_last_update())
 
-        filename = str("Update_" + self.now.strftime("%d-%m-%Y_%H-%M-%S"))
+        filename = str("Update_" + self.now.strftime("%d-%m-%Y_%H-%M-%S") + ".json")
+        path = str("output/updates/")
         with open(filename, "w") as f:
             json.dump(self.new_update_list, f, indent=4, default=lambda o: o.__dict__)
-
+        shutil.move(filename, path)
 
     def save_novels_list(self, file_name):
         self.output.save_novels_list(self.novels_list, file_name)

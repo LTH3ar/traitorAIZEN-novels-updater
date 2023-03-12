@@ -1,5 +1,8 @@
 from input import Input
 from output import Output
+from datetime import datetime
+from subprocess import call
+import shutil
 
 class ExtraFuncs:
     def __init__(self, novels_list, novels_list_selected):
@@ -7,6 +10,7 @@ class ExtraFuncs:
         self.novels_list_selected = novels_list_selected
         self.input = Input(self.novels_list, self.novels_list_selected)
         self.output = Output(self.novels_list, self.novels_list_selected)
+        self.now = datetime.now()
 
     #user input
     def novel_selected_add(self):
@@ -50,3 +54,7 @@ class ExtraFuncs:
         last_update = input("last update: ")
         self.input.input_novel(index, novel_id, novel_title, novel_url, last_update, self.novels_list)
 
+    def backup_novels_list(self):
+        # copy file to backup folder shutil
+        shutil.copy("novels_list.json", "output/backup/novels_list_" + self.now.strftime("%d-%m-%Y_%H-%M-%S") + ".json")
+        shutil.copy("novels_list_selected.json", "output/backup/novels_list_selected_" + self.now.strftime("%d-%m-%Y_%H-%M-%S") + ".json")
