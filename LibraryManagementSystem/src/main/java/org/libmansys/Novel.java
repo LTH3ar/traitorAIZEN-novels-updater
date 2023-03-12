@@ -1,52 +1,68 @@
 package org.libmansys;
-
 public class Novel {
-    private String id;
-    private String title;
-    private String url;
-    private String last_update;
+    private String index = "N/A";
+    private String id = "N/A";
+    private String title = "N/A";
+    private String url = "N/A";
+    private String lastUpdate = "N/A";
 
-    //init
-    public Novel() {
-        this.id = "N/A";
-        this.title = "N/A";
-        this.url = "N/A";
-        this.last_update = "N/A";
+    public String getIndex() {
+        return index;
     }
 
-    //getters
+    public void setIndex(int index) throws IllegalArgumentException {
+        if (index >= 0) {
+            this.index = String.valueOf(index);
+        } else {
+            throw new IllegalArgumentException("Invalid index");
+        }
+    }
+
     public String getId() {
         return id;
+    }
+
+    public void setId(String novelId) throws IllegalArgumentException {
+        if (novelId != null && !novelId.isEmpty()) {
+            this.id = novelId;
+        } else {
+            this.id = "N/A";
+        }
     }
 
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String novelTitle) throws IllegalArgumentException {
+        if (novelTitle != null && !novelTitle.isEmpty()) {
+            this.title = novelTitle;
+        } else {
+            this.title = "N/A";
+        }
+    }
+
     public String getUrl() {
         return url;
     }
 
-    public String getLast_update() {
-        return last_update;
+    public void setUrl(String novelUrl) throws IllegalArgumentException {
+        if (novelUrl != null && !novelUrl.isEmpty()) {
+            this.url = novelUrl;
+        } else {
+            this.url = "N/A";
+        }
     }
 
-    //setters
-    public void setId(String id) {
-        this.id = id;
+    public String getLastUpdate() {
+        return lastUpdate;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setLastUpdate(String lastUpdate) throws IllegalArgumentException {
+        if (lastUpdate != null && !lastUpdate.isEmpty()) {
+            this.lastUpdate = lastUpdate;
+        } else {
+            this.lastUpdate = "N/A";
+        }
     }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public void setLast_update(String last_update) {
-        this.last_update = last_update;
-    }
-
-
 }

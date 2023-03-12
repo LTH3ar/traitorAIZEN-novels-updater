@@ -1,7 +1,11 @@
 package org.libmansys;
 
+import java.io.IOException;
+
+//just run ManagementSystem.java
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
+    public static void main(String[] args) throws IOException {
+        ManagementSystem managementSystem = new ManagementSystem();
+        managementSystem.optionList();
     }
 }

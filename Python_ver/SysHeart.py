@@ -14,7 +14,6 @@ class SysHeart:
         self.new_update_list = []
         self.list_file = "novels_list.json"
         self.list_file_selected = "novels_list_selected.json"
-        self.list_file_new_update = "new_update_list.json"
         self.main_url = "http://www.vn-meido.com/k1/index.php?topic=6646.msg38869#msg38869"
         self.main_funcs = MainFuncs(self.novels_list, self.novels_list_seleted, self.new_update_list)
         self.extra_funcs = ExtraFuncs(self.novels_list, self.novels_list_seleted)
