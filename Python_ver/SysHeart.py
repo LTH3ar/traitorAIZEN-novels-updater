@@ -32,10 +32,6 @@ class SysHeart:
 
             choice = input("Enter your choice: ")
             if choice == "1":
-                # reset novels_list_seleted, new_update_list, novels_list
-                self.novels_list_seleted = []
-                self.new_update_list = []
-                self.novels_list = []
                 if self.main_funcs.if_exist(self.list_file):
                     self.main_funcs.update_novels_list(self.main_url, self.list_file)
                 else:

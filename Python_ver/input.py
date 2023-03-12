@@ -17,6 +17,8 @@ class Input:
         lst.append(novel)
 
     def load_novels_list(self, file_name, lst):
+        #reset list
+        lst.clear()
         with open(file_name, "r") as f:
             data = json.load(f)
             for novel in data:

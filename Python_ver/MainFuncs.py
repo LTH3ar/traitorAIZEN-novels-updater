@@ -39,6 +39,9 @@ class MainFuncs:
         results = soup.find_all("a", href=True, class_="bbc_link", target="_blank", rel="noopener")
         tmp_id = int(0)
         index = int(0)
+        #reset list
+        self.novels_list.clear()
+
         for result in results:
             tmp_url = result["href"]
             if "topic=" in tmp_url:
