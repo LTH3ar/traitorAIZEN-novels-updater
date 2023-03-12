@@ -96,7 +96,7 @@ class MainFuncs:
                         novel.set_last_update(update)
                         self.new_update_list.append(novel)
                         self.output.output_novel(novel)
-                        self.output.save_novels_list(file_name1)
+                        self.output.save_novels_list(self.novels_list, file_name1)
         #self.output.save_novels_list("novels_list.json")
 
     # output the new_update_list, save it to a file
