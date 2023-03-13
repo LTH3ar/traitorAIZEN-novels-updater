@@ -1,6 +1,6 @@
 from SysHeart import SysHeart
-
+import sys
 if __name__ == "__main__":
     sys_heart = SysHeart()
-    while True:
-        sys_heart.option_lst()
+    sys_heart.option_lst()
+    sys.exit()

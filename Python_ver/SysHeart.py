@@ -56,7 +56,7 @@ class SysHeart:
             elif choice == "9":
                 self.extra_funcs.backup_novels_list()
             elif choice == "10":
-                exit()
+                break
             else:
                 print("Invalid choice")
 
