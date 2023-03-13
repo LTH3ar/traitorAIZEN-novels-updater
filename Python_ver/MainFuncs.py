@@ -109,7 +109,7 @@ class MainFuncs:
             print("Last update: " + item.get_last_update())
 
         filename = str("Update_" + self.now.strftime("%d-%m-%Y_%H-%M-%S") + ".json")
-        path = str("output/updates/")
+        path = str("output/update/")
         with open(filename, "w") as f:
             json.dump(self.new_update_list, f, indent=4, default=lambda o: o.__dict__)
         shutil.move(filename, path)
