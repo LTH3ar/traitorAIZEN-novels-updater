@@ -16,12 +16,6 @@
             <version>2.8.9</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.14.3</version>
-        </dependency>
-
         <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -34,6 +28,11 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.15.3</version>
         </dependency>
     </dependencies>
 
