@@ -6,7 +6,9 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         ManagementSystem ms = new ManagementSystem();
-        ms.scrapeList();
+        //ms.scrapeList();
+        //ms.saveList2File();
+        ms.File2List();
         ms.printList();
     }
 }

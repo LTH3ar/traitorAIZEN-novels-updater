@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,5 +52,14 @@ public class ManagementSystem {
         for (Novel novel : Lib1.getNovels()) {
             System.out.println(novel.getIndex() + " " + novel.getId() + " " + novel.getTitle() + " " + novel.getUrl() + " " + novel.getLastUpdate());
         }
+    }
+
+    //save list to json file
+    String filename = "novels.json";
+    public void saveList2File() {
+        Lib1.saveList2File(filename);
+    }
+    public void File2List() {
+        Lib1.File2List(filename);
     }
 }
