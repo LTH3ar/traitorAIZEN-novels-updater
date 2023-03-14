@@ -34,8 +34,12 @@ public class IOFuncs extends Novel {
         this.novels = novels;
     }
 
+    public void clearList(){
+        novels.clear();
+    }
+
     //save list to json file
-    public void saveList2File(String filename){
+    public void List2File(String filename){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(filename)) {
             gson.toJson(novels, writer);
@@ -46,6 +50,7 @@ public class IOFuncs extends Novel {
 
     //load list from json file
     public void File2List(String filename){
+        novels.clear();
         Gson gson = new Gson();
         if (novels != null){
             novels.clear();
