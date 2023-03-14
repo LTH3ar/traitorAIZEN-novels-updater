@@ -1,0 +1,14 @@
+# venv
+venv/
+
+# .idea
+.idea/
+
+# .vscode
+.vscode/
+
+# __pycache__
+__pycache__/
+
+# target
+target/
