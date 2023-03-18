@@ -2,7 +2,7 @@ traitorAIZEN-novels-update-checking-tool
 ==============================================================
 
 1. Scrape or update list of novels:
--> scrape the list of novels to novels.json file, if the file
+* scrape the list of novels to novels.json file, if the file
 already exist then the program load the existing file then
 scrape the new list then write the old "last_update" to the
 new scraped list then save the new list to novels.json
@@ -10,7 +10,7 @@ new scraped list then save the new list to novels.json
 ==============================================================
 
 2. Scrape last update time of all novels in the selected list:
--> load novels.json, novels_selected.json, use the selected
+* load novels.json, novels_selected.json, use the selected
 list to get urls from novels_list then access each url to
 scrape the last update text, compare the scraped elements with
 "last_update" elements in novels.json if they are different
