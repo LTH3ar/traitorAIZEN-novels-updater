@@ -40,7 +40,7 @@ public class IOFuncs extends Novel {
 
     //save list to json file
     public void List2File(String filename){
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         try (FileWriter writer = new FileWriter(filename)) {
             gson.toJson(novels, writer);
         } catch (IOException e) {
