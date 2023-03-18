@@ -1,30 +1,38 @@
-# traitorAIZEN-novels-update-checking-tool
-This is just a product of my laziness and it's only job is to check whether there is any new upload in the list of traitorAIZEN novels
+traitorAIZEN-novels-update-checking-tool
+==============================================================
 
-This is how it works: 
+1. Scrape or update list of novels:
+-> scrape the list of novels to novels.json file, if the file
+already exist then the program load the existing file then
+scrape the new list then write the old "last_update" to the
+new scraped list then save the new list to novels.json
 
-'index_list.txt': store the index number of your novel list (you can find these number in 'novel_url_list.json')
+==============================================================
 
-step 1: 
+2. Scrape last update time of all novels in the selected list:
+-> load novels.json, novels_selected.json, use the selected
+list to get urls from novels_list then access each url to
+scrape the last update text, compare the scraped elements with
+"last_update" elements in novels.json if they are different
+and scraped elements is not ["N/A"] the overwrite the
+"last_update" and append novels to a tmp list and append full
+checked list of novel to tmp list full; after that save the list
+to Update_dd-mm-yyyy_hh-mm-ss.json and Update_Full_dd_mm_yyyy...json
+respectively.
 
-run 's1-get-novels-list-from-website.py', this python file get a list of novels from http://www.vn-meido.com/k1/index.php?topic=6646.msg38869#msg38869 and save it to 'novel_url_list.json'.
+==============================================================
 
+3. Print list of novels
+==============================================================
 
+4. Print list of selected novels
+==============================================================
 
-step 2: 
+5. Search novel(title, id)
+==============================================================
 
-run 's2-get-html-code.py', this file will go through all number in 'index_list.txt' and use these number to get the url of novels from 'novel_url_list.json' which have matched index number --> access each of these url and get a specific line of html code from each of these website which have 'Last Edit:' and 'by traitorAIZEN'
-and save all these data to 'html_database_update.csv'
+6. Backup all files(novels.json, novels_selected.json)
+==============================================================
 
-IF YOU RUN THIS FILE FOR THE FISRT TIME rename the file to 'html_database.csv' this file serves as the original data to compare with the new 'html_database_update.csv' file the next time you run 's2-get-html-code.py' and BE PATIENT because the amount of time this process will take depend on how many novel in your list 
-
-
-
-step 3:
-
-run 'check-update-csv.py' or 'check-update-json.py'
-
-'check-update-csv.py' will compare data from 'html_database.csv' and  'html_database_update.csv' row by row and print the info of the new update novels which including 'Title', 'URL'
-
-'check-update-json.py' will compare data from 'novel_last_update.json' and  'novel_update.json' row by row and print the info of the new update novels which including 'Title', 'URL'
+7. Exit
 
