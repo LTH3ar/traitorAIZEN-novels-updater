@@ -4,8 +4,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import java.io.File;
+import java.net.UnknownHostException;
 import java.time.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,9 +29,41 @@ public class ManagementSystem {
     String filename2 = "novels_selected.json";
 
 
+    // check connection
+    public boolean checkConnection(String url) throws IOException {
+        try {
+            URL url1 = new URL(url);
+            HttpURLConnection huc = (HttpURLConnection) url1.openConnection();
+            huc.setRequestMethod("GET");
+            huc.connect();
+            int code = huc.getResponseCode();
+            if (code != 200) {
+                System.out.println("URL is not accessible");
+                return false;
+            }
+        } catch (UnknownHostException e) {
+            System.out.println("URL is not accessible");
+            return false;
+        }
+        return true;
+    }
+
+
     // scrape list
     public void scrapeList() throws IOException {
         String url = "http://www.vn-meido.com/k1/index.php?topic=6646.msg38869#msg38869";
+
+        //check connection
+        if (!checkConnection(url)) {
+            return;
+        }
+        //wait 1 second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Document doc = Jsoup.connect(url).get();
         Elements results = doc.select("a.bbc_link[href][target=_blank][rel=noopener]");
         int tmp_id = 0;
@@ -95,7 +130,19 @@ public class ManagementSystem {
     }
 
     // Scrape last update time of all novels in the list
+    IOFuncs LibTmp = new IOFuncs();
     public void scrapeLastUpdate(String url, String id) throws IOException {
+        //check if url is accessible
+        if (!checkConnection(url)) {
+            return;
+        }
+        //wait 1 second
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Document page = Jsoup.connect(url).get();
         //span tag, smalltext modified floatright mvisible
         Elements results = page.select("span.smalltext.modified.floatright.mvisible");
@@ -113,8 +160,9 @@ public class ManagementSystem {
 
         for (Novel novel : Lib1.getNovels()) {
             if (novel.getId().equals(id)) {
-                if (!novel.getLastUpdate().equals(time_array.toString())) {
+                if ((!novel.getLastUpdate().equals(time_array.toString())) && (!time_array.toString().equals("[N/A]"))) {
                     novel.setLastUpdate(time_array.toString());
+                    LibTmp.addNovel(novel);
                 } else{
                     System.out.println("\nNo change" + novel.getId());
                 }
@@ -123,14 +171,14 @@ public class ManagementSystem {
 
     }
     public void scrapeAllLastUpdate() throws IOException {
-        IOFuncs LibTmp = new IOFuncs();
+        IOFuncs LibTmp2 = new IOFuncs();
         Lib1.File2List(filename1);
         Lib2.File2List(filename2);
         for (Novel novel : Lib1.getNovels()) {
             for (Novel novel2 : Lib2.getNovels()) {
                 if (novel.getId().equals(novel2.getId())) {
                     scrapeLastUpdate(novel.getUrl(), novel.getId());
-                    LibTmp.addNovel(novel);
+                    LibTmp2.addNovel(novel);
                     Lib1.List2File(filename1);
                     System.out.println(novel.getIndex()
                             + " " + novel.getId()
@@ -143,8 +191,13 @@ public class ManagementSystem {
         String filenameTmp = ("Update_"
                 + DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss")
                 .format(LocalDateTime.now()) + ".json");
+        String filenameTmp2 = ("Update_Full_"
+                + DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss")
+                .format(LocalDateTime.now()) + ".json");
         LibTmp.List2File(filenameTmp);
+        LibTmp2.List2File(filenameTmp2);
         Path presetPath = Paths.get(filenameTmp);
+        Path presetPath2 = Paths.get(filenameTmp2);
         Path targetDir = Paths.get("output/update");
 
         try {
@@ -158,6 +211,12 @@ public class ManagementSystem {
             Files.move(presetPath, targetFile);
 
             System.out.println("File moved successfully to " + targetFile);
+
+            // Move the preset file to the target directory
+            Path targetFile2 = targetDir.resolve(presetPath2.getFileName());
+            Files.move(presetPath2, targetFile2);
+
+            System.out.println("File moved successfully to " + targetFile2);
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
