@@ -4,10 +4,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import java.io.File;
 import java.net.UnknownHostException;
 import java.time.*;
 import java.nio.file.Files;
@@ -15,8 +16,6 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 
 
-
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +47,16 @@ public class ManagementSystem {
         return true;
     }
 
+    public void whateverList2File(List<String> lst, String filename){
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename, true)))) {
+            for (String item_str : lst) {
+                out.println(item_str);
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to write to file");
+        }
+    }
+
 
     // scrape list
     public void scrapeList() throws IOException {
@@ -55,6 +64,7 @@ public class ManagementSystem {
 
         //check connection
         if (!checkConnection(url)) {
+            System.out.println("Connection failed");
             return;
         }
         //wait 1 second
@@ -133,7 +143,11 @@ public class ManagementSystem {
     IOFuncs LibTmp = new IOFuncs();
     public void scrapeLastUpdate(String url, String id) throws IOException {
         //check if url is accessible
+        List<String> failed_list = new ArrayList<>();
         if (!checkConnection(url)) {
+            System.out.println("Connection failed");
+            System.out.println("Skipping " + id);
+            failed_list.add(id);
             return;
         }
         //wait 1 second
@@ -167,6 +181,11 @@ public class ManagementSystem {
                     System.out.println("\nNo change" + novel.getId());
                 }
             }
+        }
+
+        // save failed list
+        if (!failed_list.isEmpty()) {
+            whateverList2File(failed_list, "failed_list.txt");
         }
 
     }
@@ -220,6 +239,7 @@ public class ManagementSystem {
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
         }
+
     }
     public void shortcutScrapeLastUpdate() throws IOException{
         File file1 = new File(filename1);
