@@ -1,4 +1,4 @@
-traitorAIZEN-novels-update-checking-tool
+traitorAIZEN-novels-updater
 ==============================================================
 
 1. Scrape or update list of novels:
